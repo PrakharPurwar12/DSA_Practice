@@ -67,6 +67,28 @@ class trie{
         return searchutil(root, word);
     }
 
+    bool startsWithUtil(trieNode* root, string prefix){
+        if(prefix.length()==0){
+            return true;
+        }
+
+        int index = prefix[0]-'a';
+        trieNode* child;
+
+        if(root->children[index] != NULL){
+            child = root->children[index];
+        }
+        else{
+            return false;
+        }
+
+        return startsWithUtil(child, prefix.substr(1));
+    }
+
+    bool startsWith(string prefix){
+        return startsWithUtil(root, prefix);
+    }
+
     bool removeUtil(trieNode* root, string word){
         if(!searchutil(root, word)){
             return false;
