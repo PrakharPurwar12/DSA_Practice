@@ -18,6 +18,11 @@ class trieNode{
 
 class trie{
     trieNode* root;
+    public:
+    trie(){
+        root = new trieNode('\0');
+    }
+
 
     void insertUtil(trieNode* root, string word){
         //base case
@@ -26,16 +31,29 @@ class trie{
             return;
         }
         int index = word[0] - 'a';
+        trieNode* child;
+
+        if(root->children[index] != NULL){
+            child = root->children[index];
+        }
+        else{
+            child = new trieNode(word[0]);
+            root -> children[index] = child;
+        }
+        insertUtil(child, word.substr(1));
         
     }
 
     void insertWord(string word){
         insertUtil(root, word);
     }
-}
+};
 
 int main(){
-
+    trie t;
+    t.insertWord("apple");
+    t.insertWord("app");
+    
 
     return 0;
 }
