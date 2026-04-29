@@ -47,13 +47,33 @@ class trie{
     void insertWord(string word){
         insertUtil(root, word);
     }
+
+    bool searchutil(trieNode* root, string word){
+        if(word.length()==0){
+            return root->isTerminal;
+        }
+        int index = word[0]-'a';
+        trieNode* child;
+        if(root->children[index] != NULL){
+            child = root->children[index];
+        }
+        else{
+            return false;
+        }
+        return searchutil(child, word.substr(1));
+    }
+
+    bool searchWord(string word){
+        return searchutil(root, word);
+    }
 };
 
 int main(){
     trie t;
     t.insertWord("apple");
     t.insertWord("app");
-    
+    cout<<t.searchWord("app")<<endl;
+
 
     return 0;
 }
