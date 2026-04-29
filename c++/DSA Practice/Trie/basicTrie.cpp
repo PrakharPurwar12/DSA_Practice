@@ -66,6 +66,48 @@ class trie{
     bool searchWord(string word){
         return searchutil(root, word);
     }
+
+    bool removeUtil(trieNode* root, string word){
+        if(!searchutil(root, word)){
+            return false;
+        }
+
+        if(word.length()==0){
+            root->isTerminal = false;
+
+            for(int i=0; i<26; i++){
+                if(root->children[i] != NULL){
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        int index = word[0]-'a';
+        trieNode* child = root->children[index];
+
+        bool shouldDeleteChild = removeUtil(child, word.substr(1));
+
+        if(shouldDeleteChild){
+            delete child;
+            root->children[index] = NULL;
+        }
+
+        if(root->isTerminal){
+            return false;
+        }
+
+        for(int i=0; i<26; i++){
+            if(root->children[i] != NULL){
+                return false;
+            }
+        }
+
+        return true;
+    }
+    void removeWord(string word){
+        removeUtil(root, word);
+    }
 };
 
 int main(){
@@ -74,6 +116,7 @@ int main(){
     t.insertWord("app");
     cout<<t.searchWord("app")<<endl;
 
-
+    t.removeWord("app");
+    cout<<t.searchWord("app")<<endl;
     return 0;
 }
